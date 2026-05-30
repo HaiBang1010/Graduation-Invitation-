@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thiệp mời tốt nghiệp — Trần Phan Hải Bằng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Great+Vibes&display=swap"
+    rel="stylesheet">
+  <style>
+    /* === Color tokens === */
+    :root {
+      --cream: #f4ecd8;
+      --paper: #ebe0c5;
+      --sepia: #8b6f47;
+      --gold: #c9a961;
+      --maroon: #7a2e1f;
+      --ink: #3d2817;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      min-height: 100%
+    }
+
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at top, #2a1810 0%, #1a0e08 100%) fixed;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* === Floating sepia particles layer === */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      bottom: -20px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sepia);
+      opacity: 0;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0
+      }
+
+      10% {
+        opacity: 0.4
+      }
+
+      90% {
+        opacity: 0.4
+      }
+
+      100% {
+        transform: translateY(-110vh) translateX(var(--drift, 30px));
+        opacity: 0
+      }
+    }
+
+    /* === Paper card === */
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      background: var(--cream);
+      padding: 64px 56px 56px;
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.6),
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        inset 0 0 80px rgba(139, 111, 71, 0.15);
+      border: 1px solid rgba(139, 111, 71, 0.3);
+      z-index: 1;
+      opacity: 0;
+      transform: scale(0.95);
+      animation: cardIn 0.8s ease-out 0s forwards;
+      overflow: hidden;
+    }
+
+    @keyframes cardIn {
+      to {
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
+
+    /* Paper texture overlay via SVG filter */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.44  0 0 0 0 0.28  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Subtle paper darkening at edges */
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(139, 111, 71, 0.25) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .card>* {
+      position: relative;
+      z-index: 2
+    }
+
+    /* === Ribbons (top corners) === */
+    .ribbon {
+      position: absolute;
+      top: -10px;
+      width: 120px;
+      height: 160px;
+      z-index: 3;
+      transform: translateY(-50px);
+      opacity: 0;
+      animation:
+        ribbonIn 0.6s ease-out 0.5s forwards,
+        ribbonSway 4s ease-in-out 1.5s infinite alternate;
+    }
+
+    .ribbon.left {
+      left: 24px;
+      transform-origin: top center
+    }
+
+    .ribbon.right {
+      right: 24px;
+      transform-origin: top center;
+      transform: translateY(-50px) scaleX(-1)
+    }
+
+    @keyframes ribbonIn {
+      to {
+        transform: translateY(0)
+      }
+    }
+
+    .ribbon.right {
+      animation:
+        ribbonInRight 0.6s ease-out 0.5s forwards,
+        ribbonSwayRight 4s ease-in-out 1.5s infinite alternate;
+    }
+
+    @keyframes ribbonInRight {
+      to {
+        transform: translateY(0) scaleX(-1)
+      }
+    }
+
+    @keyframes ribbonSway {
+      from {
+        transform: translateY(0) rotate(-2deg)
+      }
+
+      to {
+        transform: translateY(0) rotate(2deg)
+      }
+    }
+
+    @keyframes ribbonSwayRight {
+      from {
+        transform: translateY(0) scaleX(-1) rotate(-2deg)
+      }
+
+      to {
+        transform: translateY(0) scaleX(-1) rotate(2deg)
+      }
+    }
+
+    /* === Corner ornaments === */
+    .corner {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      z-index: 3;
+      color: var(--gold);
+      opacity: 0;
+      animation: cornerIn 0.5s ease-out 1.0s forwards;
+    }
+
+    .corner.tl {
+      top: 14px;
+      left: 14px
+    }
+
+    .corner.tr {
+      top: 14px;
+      right: 14px;
+      transform: scaleX(-1)
+    }
+
+    .corner.bl {
+      bottom: 14px;
+      left: 14px;
+      transform: scaleY(-1)
+    }
+
+    .corner.br {
+      bottom: 14px;
+      right: 14px;
+      transform: scale(-1, -1)
+    }
+
+    @keyframes cornerIn {
+      to {
+        opacity: 1
+      }
+    }
+
+    /* === Headings === */
+    h1.title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--maroon);
+      text-align: center;
+      letter-spacing: 0.08em;
+      margin-top: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s ease-out 1.2s forwards;
+    }
+
+    .subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--sepia);
+      text-align: center;
+      margin-top: 8px;
+      opacity: 0;
+      animation: fadeIn 0.4s ease-out 1.6s forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1
+      }
+    }
+
+    /* === Divider with ornament === */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 28px auto;
+      gap: 14px;
+      color: var(--gold);
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 2.0s forwards;
+    }
+
+    .divider .line {
+      flex: 1;
+      max-width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .divider svg {
+      width: 28px;
+      height: 28px
+    }
+
+    /* === Invitation prose === */
+    .invite-text {
+      text-align: center;
+      font-size: 1.15rem;
+      font-style: italic;
+      line-height: 1.8;
+      color: var(--ink);
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 2.0s forwards;
+    }
+
+    .invite-text-2 {
+      text-align: center;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: var(--ink);
+      margin-top: 18px;
+      opacity: 0;
+      animation: fadeIn 0.4s ease-out 3.2s forwards;
+    }
+
+    /* === Guest name (typewriter) === */
+    .guest-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      color: var(--maroon);
+      text-align: center;
+      margin: 18px 0;
+      min-height: 1.4em;
+      border-right: 2px solid var(--maroon);
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: blinkCaret 0.8s steps(1) infinite;
+    }
+
+    .guest-name-wrap {
+      text-align: center
+    }
+
+    @keyframes blinkCaret {
+      50% {
+        border-color: transparent
+      }
+    }
+
+    .guest-name.done {
+      border-right: none;
+      animation: none
+    }
+
+    /* === Graduate name === */
+    .grad-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.6rem, 6vw, 3.6rem);
+      color: var(--maroon);
+      text-align: center;
+      margin: 14px 0 6px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out 3.6s forwards;
+    }
+
+    /* === Info rows === */
+    .info-section {
+      margin-top: 22px;
+      opacity: 0;
+      animation: fadeIn 0.4s ease-out 4.0s forwards;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      justify-content: center;
+      text-align: left;
+      margin: 14px 0;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+
+    .info-row .ico {
+      color: var(--gold);
+      flex: 0 0 auto;
+      width: 24px;
+      height: 24px;
+      margin-top: 3px;
+    }
+
+    .info-row a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--sepia);
+    }
+
+    .info-row a:hover {
+      color: var(--maroon)
+    }
+
+    /* === Countdown === */
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 30px auto 10px;
+      flex-wrap: wrap;
+    }
+
+    .cd-cell {
+      background: var(--paper);
+      border: 1px solid var(--gold);
+      padding: 14px 8px 10px;
+      min-width: 78px;
+      text-align: center;
+      box-shadow: inset 0 0 20px rgba(139, 111, 71, 0.15);
+      opacity: 0;
+      transform: scale(0.8);
+      animation: cellIn 0.4s ease-out forwards;
+    }
+
+    .cd-cell:nth-child(1) {
+      animation-delay: 4.4s
+    }
+
+    .cd-cell:nth-child(2) {
+      animation-delay: 4.5s
+    }
+
+    .cd-cell:nth-child(3) {
+      animation-delay: 4.6s
+    }
+
+    .cd-cell:nth-child(4) {
+      animation-delay: 4.7s
+    }
+
+    @keyframes cellIn {
+      to {
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
+
+    .cd-num {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--maroon);
+      line-height: 1;
+      display: inline-block;
+      transition: transform 0.4s ease;
+    }
+
+    .cd-num.flip {
+      transform: rotateX(360deg)
+    }
+
+    .cd-label {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sepia);
+    }
+
+    .cd-done {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--maroon);
+      margin: 20px 0;
+      display: none;
+    }
+
+    /* === RSVP === */
+    .rsvp {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin: 32px 0 10px;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(15px);
+      animation: fadeUp 0.4s ease-out 4.9s forwards;
+    }
+
+    .btn {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.1em;
+      padding: 13px 26px;
+      border: 1.5px solid var(--maroon);
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+      min-width: 200px;
+    }
+
+    .btn.primary {
+      background: var(--maroon);
+      color: var(--cream)
+    }
+
+    .btn.primary:hover {
+      background: #5e2218
+    }
+
+    .btn.ghost {
+      color: var(--maroon)
+    }
+
+    .btn.ghost:hover {
+      background: var(--maroon);
+      color: var(--cream)
+    }
+
+    .rsvp-msg {
+      display: none;
+      text-align: center;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--maroon);
+      margin: 24px 0;
+    }
+
+    /* === Footer === */
+    .footer {
+      text-align: center;
+      margin-top: 36px;
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.6rem;
+      color: var(--sepia);
+      font-style: italic;
+    }
+
+    /* === Music button === */
+    .music-btn {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 1.5px solid var(--gold);
+      color: var(--maroon);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s;
+    }
+
+    .music-btn:hover {
+      transform: scale(1.08)
+    }
+
+    .music-btn.playing {
+      animation: pulse 1s ease-in-out infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.1)
+      }
+    }
+
+    .music-btn svg {
+      width: 24px;
+      height: 24px
+    }
+
+    /* === Responsive === */
+    @media (max-width:1024px) {
+      .card {
+        max-width: 600px
+      }
+    }
+
+    @media (max-width:480px) {
+      .card {
+        padding: 48px 22px 36px;
+        width: 95%;
+        font-size: 0.92rem;
+      }
+
+      h1.title {
+        font-size: 1.85rem
+      }
+
+      .subtitle {
+        font-size: 1rem
+      }
+
+      .invite-text,
+      .invite-text-2 {
+        font-size: 1rem
+      }
+
+      .corner {
+        width: 54px;
+        height: 54px
+      }
+
+      .ribbon {
+        width: 80px;
+        height: 110px
+      }
+
+      .countdown {
+        gap: 8px
+      }
+
+      .cd-cell {
+        min-width: 64px;
+        padding: 10px 4px 8px
+      }
+
+      .cd-num {
+        font-size: 1.5rem
+      }
+
+      .cd-label {
+        font-size: 0.62rem;
+        letter-spacing: 0.18em
+      }
+
+      .rsvp {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 10px
+      }
+
+      .btn {
+        width: 100%;
+        min-width: 0
+      }
+
+      .music-btn {
+        width: 44px;
+        height: 44px;
+        top: 12px;
+        right: 12px
+      }
+
+      .music-btn svg {
+        width: 20px;
+        height: 20px
+      }
+    }
+
+    /* === Reduced motion === */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01s !important;
+      }
+
+      .particle {
+        display: none
+      }
+
+      .ribbon {
+        animation: fadeIn 0.4s ease-out 0.3s forwards !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating particles -->
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- Music toggle button -->
+  <button class="music-btn" id="musicBtn" aria-label="Bật / tắt nhạc nền">
+    <!-- Default: music-off icon -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+      stroke-linejoin="round" id="musicIcon">
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" />
+      <circle cx="18" cy="16" r="3" />
+      <line x1="3" y1="3" x2="21" y2="21" />
+    </svg>
+  </button>
+
+  <!-- Background audio -->
+  <audio id="bgm" src="./assets/bgm.mp3" loop preload="auto"></audio>
+
+  <!-- Main card -->
+  <main class="card" role="main">
+
+    <!-- Ribbons (top corners) -->
+    <svg class="ribbon left" viewBox="0 0 120 160" aria-hidden="true">
+      <defs>
+        <linearGradient id="ribGradL" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#7a2e1f" />
+          <stop offset="0.5" stop-color="#9d3a28" />
+          <stop offset="1" stop-color="#5e2218" />
+        </linearGradient>
+      </defs>
+      <path d="M10 0 L60 0 L60 140 L35 120 L10 140 Z" fill="url(#ribGradL)" />
+      <path d="M10 0 L10 140 L0 130 L0 0 Z" fill="#5e2218" />
+    </svg>
+    <svg class="ribbon right" viewBox="0 0 120 160" aria-hidden="true">
+      <defs>
+        <linearGradient id="ribGradR" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#7a2e1f" />
+          <stop offset="0.5" stop-color="#9d3a28" />
+          <stop offset="1" stop-color="#5e2218" />
+        </linearGradient>
+      </defs>
+      <path d="M10 0 L60 0 L60 140 L35 120 L10 140 Z" fill="url(#ribGradR)" />
+      <path d="M10 0 L10 140 L0 130 L0 0 Z" fill="#5e2218" />
+    </svg>
+
+    <!-- Corner ornaments (4 corners) -->
+    <svg class="corner tl" viewBox="0 0 80 80" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M5 5 L40 5 M5 5 L5 40" />
+        <path d="M5 5 Q25 10 35 20 Q45 30 50 50" />
+        <circle cx="10" cy="10" r="1.5" fill="currentColor" />
+        <path d="M15 15 Q20 10 28 12 Q24 18 18 22 Z" fill="currentColor" opacity="0.6" />
+        <path d="M8 25 Q14 22 20 28" />
+        <path d="M25 8 Q22 14 28 20" />
+      </g>
+    </svg>
+    <svg class="corner tr" viewBox="0 0 80 80" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M5 5 L40 5 M5 5 L5 40" />
+        <path d="M5 5 Q25 10 35 20 Q45 30 50 50" />
+        <circle cx="10" cy="10" r="1.5" fill="currentColor" />
+        <path d="M15 15 Q20 10 28 12 Q24 18 18 22 Z" fill="currentColor" opacity="0.6" />
+        <path d="M8 25 Q14 22 20 28" />
+        <path d="M25 8 Q22 14 28 20" />
+      </g>
+    </svg>
+    <svg class="corner bl" viewBox="0 0 80 80" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M5 5 L40 5 M5 5 L5 40" />
+        <path d="M5 5 Q25 10 35 20 Q45 30 50 50" />
+        <circle cx="10" cy="10" r="1.5" fill="currentColor" />
+        <path d="M15 15 Q20 10 28 12 Q24 18 18 22 Z" fill="currentColor" opacity="0.6" />
+        <path d="M8 25 Q14 22 20 28" />
+        <path d="M25 8 Q22 14 28 20" />
+      </g>
+    </svg>
+    <svg class="corner br" viewBox="0 0 80 80" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M5 5 L40 5 M5 5 L5 40" />
+        <path d="M5 5 Q25 10 35 20 Q45 30 50 50" />
+        <circle cx="10" cy="10" r="1.5" fill="currentColor" />
+        <path d="M15 15 Q20 10 28 12 Q24 18 18 22 Z" fill="currentColor" opacity="0.6" />
+        <path d="M8 25 Q14 22 20 28" />
+        <path d="M25 8 Q22 14 28 20" />
+      </g>
+    </svg>
+
+    <h1 class="title">LỄ TỐT NGHIỆP</h1>
+    <p class="subtitle">Trường Đại học Công nghệ Thông tin — UIT</p>
+
+    <div class="divider" aria-hidden="true">
+      <span class="line"></span>
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2 L13.5 9 L21 10 L15 14.5 L17 22 L12 18 L7 22 L9 14.5 L3 10 L10.5 9 Z" />
+      </svg>
+      <span class="line"></span>
+    </div>
+
+    <p class="invite-text">
+      Với tất cả niềm vui và lòng biết ơn sâu sắc,<br>
+      tôi trân trọng kính mời
+    </p>
+
+    <div class="guest-name-wrap">
+      <span class="guest-name" id="guestName" aria-live="polite"></span>
+    </div>
+
+    <p class="invite-text-2">
+      Đến chung vui cùng tôi trong ngày lễ tốt nghiệp<br>
+      <em>Sự hiện diện của bạn chính là món quà ý nghĩa nhất.</em>
+    </p>
+
+    <div class="divider" aria-hidden="true">
+      <span class="line"></span>
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2 L13.5 9 L21 10 L15 14.5 L17 22 L12 18 L7 22 L9 14.5 L3 10 L10.5 9 Z" />
+      </svg>
+      <span class="line"></span>
+    </div>
+
+    <p class="grad-name">Trần Phan Hải Bằng</p>
+
+    <div class="info-section">
+      <div class="info-row">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg>
+        <span>08:00 — Thứ Năm, ngày 11 tháng 6 năm 2026</span>
+      </div>
+      <div class="info-row">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
+        <span>
+          <a href="https://maps.app.goo.gl/4kMBGR9QRkGMpt42A" target="_blank" rel="noopener">
+            Trường Đại học Công nghệ Thông tin<br>
+            Khu phố 6, Linh Trung, Thủ Đức, TP.HCM
+          </a>
+        </span>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown" id="countdown" aria-label="Đếm ngược đến ngày tốt nghiệp">
+      <div class="cd-cell"><span class="cd-num" id="cdDays">00</span><span class="cd-label">Ngày</span></div>
+      <div class="cd-cell"><span class="cd-num" id="cdHours">00</span><span class="cd-label">Giờ</span></div>
+      <div class="cd-cell"><span class="cd-num" id="cdMins">00</span><span class="cd-label">Phút</span></div>
+      <div class="cd-cell"><span class="cd-num" id="cdSecs">00</span><span class="cd-label">Giây</span></div>
+    </div>
+    <p class="cd-done" id="cdDone">🎓 Hôm nay là ngày trọng đại!</p>
+
+    <!-- RSVP -->
+    <div class="rsvp" id="rsvp">
+      <button class="btn primary" data-response="yes" aria-label="Xác nhận tham dự">Xác nhận tham dự</button>
+      <button class="btn ghost" data-response="no" aria-label="Không thể tham dự">Tiếc, không thể đến</button>
+    </div>
+    <p class="rsvp-msg" id="rsvpMsg"></p>
+
+    <p class="footer">— Hải Bằng —</p>
+  </main>
+
+  <script>
+    // === Parse guest name from URL ===
+    function getGuestName() {
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get('name');
+      if (!raw) return 'Quý khách quý mến';
+      try { return decodeURIComponent(raw); }
+      catch (e) { return raw; }
+    }
+
+    // === Typewriter effect for guest name (starts at 2.5s) ===
+    const guestName = getGuestName();
+    const guestEl = document.getElementById('guestName');
+    setTimeout(() => {
+      let i = 0;
+      const tick = () => {
+        if (i <= guestName.length) {
+          guestEl.textContent = guestName.slice(0, i);
+          i++;
+          setTimeout(tick, 80);
+        } else {
+          guestEl.classList.add('done');
+        }
+      };
+      tick();
+    }, 2500);
+
+    // === Countdown ===
+    const TARGET = new Date('2026-06-11T08:00:00+07:00').getTime();
+    const els = {
+      d: document.getElementById('cdDays'),
+      h: document.getElementById('cdHours'),
+      m: document.getElementById('cdMins'),
+      s: document.getElementById('cdSecs'),
+    };
+    const cdWrap = document.getElementById('countdown');
+    const cdDone = document.getElementById('cdDone');
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function setNum(el, val) {
+      const v = pad(val);
+      if (el.textContent !== v) {
+        el.classList.remove('flip');
+        // restart anim
+        void el.offsetWidth;
+        el.classList.add('flip');
+        el.textContent = v;
+      }
+    }
+    function tickCountdown() {
+      const now = Date.now();
+      const diff = TARGET - now;
+      if (diff <= 0) {
+        cdWrap.style.display = 'none';
+        cdDone.style.display = 'block';
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      setNum(els.d, d);
+      setNum(els.h, h);
+      setNum(els.m, m);
+      setNum(els.s, s);
+    }
+    tickCountdown();
+    setInterval(tickCountdown, 1000);
+
+    // === RSVP ===
+    const rsvpWrap = document.getElementById('rsvp');
+    const rsvpMsg = document.getElementById('rsvpMsg');
+    rsvpWrap.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const response = btn.dataset.response;
+        btn.disabled = true;
+        try {
+          const res = await fetch('https://formspree.io/f/maqkkadk', {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: guestName,
+              response,
+              timestamp: new Date().toISOString()
+            })
+          });
+          if (!res.ok) throw new Error('bad status');
+          rsvpWrap.style.display = 'none';
+          rsvpMsg.textContent = response === 'yes'
+            ? 'Cảm ơn bạn! Hẹn gặp ở UIT 🎓'
+            : 'Cảm ơn bạn đã hồi âm. Vẫn nhớ bạn ❤️';
+          rsvpMsg.style.display = 'block';
+        } catch (e) {
+          btn.disabled = false;
+          alert('Có lỗi, vui lòng thử lại.');
+        }
+      });
+    });
+
+    // === Background music ===
+    const bgm = document.getElementById('bgm');
+    bgm.volume = 0.3;
+    const musicBtn = document.getElementById('musicBtn');
+    const musicIcon = document.getElementById('musicIcon');
+
+    const ICON_ON = `<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>`;
+    const ICON_OFF = `<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><line x1="3" y1="3" x2="21" y2="21"/>`;
+
+    function syncMusicUI() {
+      if (!bgm.paused) {
+        musicIcon.innerHTML = ICON_ON;
+        musicBtn.classList.add('playing');
+      } else {
+        musicIcon.innerHTML = ICON_OFF;
+        musicBtn.classList.remove('playing');
+      }
+    }
+
+    // One-time autoplay on first user interaction anywhere
+    function firstInteractionPlay() {
+      bgm.play().then(syncMusicUI).catch(() => { });
+      window.removeEventListener('click', firstInteractionPlay);
+      window.removeEventListener('touchstart', firstInteractionPlay);
+      window.removeEventListener('keydown', firstInteractionPlay);
+    }
+    window.addEventListener('click', firstInteractionPlay, { once: false });
+    window.addEventListener('touchstart', firstInteractionPlay, { once: false });
+    window.addEventListener('keydown', firstInteractionPlay, { once: false });
+
+    musicBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (bgm.paused) bgm.play().then(syncMusicUI).catch(() => { });
+      else { bgm.pause(); syncMusicUI(); }
+    });
+
+    // === Spawn floating particles ===
+    (function spawnParticles() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const layer = document.getElementById('particles');
+      for (let i = 0; i < 25; i++) {
+        const p = document.createElement('span');
+        p.className = 'particle';
+        const size = 3 + Math.random() * 5;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = (Math.random() * 100) + 'vw';
+        p.style.setProperty('--drift', (Math.random() * 120 - 60) + 'px');
+        const dur = 8 + Math.random() * 7;
+        p.style.animationDuration = dur + 's';
+        p.style.animationDelay = (Math.random() * dur) + 's';
+        layer.appendChild(p);
+      }
+    })();
+  </script>
+</body>
+
+</html>
